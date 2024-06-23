@@ -1,0 +1,69 @@
+#Color enum doc: https://learn.microsoft.com/en-us/dotnet/api/system.consolecolor?view=net-8.0
+
+function Merry-RbgMas{
+    [int[]]$Colors = 9,10,12,15 #Blue, green, red, white
+    [int[]]$StarColors = 14, 15 #Yellow and white
+    [int]$Frequency = 5
+$Tree = @"
+                  /*\
+                 <*X*>
+                  \*/
+                  / \
+                 /   \
+                /+++++\
+               /  (o)  \
+              /         \
+             /'~'~'~'~'~'\
+            /  (o)   (o)  \
+           /               \
+          /&*&*&*&*&*&*&*&*&\
+         /   (o)  (o)  (o)   \
+        /                     \
+       /+++++++++++++++++++++++\
+      /   (o)  (o)   (o)  (o)   \
+     /                           \
+    /'~'~'~'~'~'~'~'~'~'~'~'~'~'~'\
+   /    (o)  (o)  (o)  (o)  (o)    \
+  /&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&\
+ /                                   \
+/.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.\
+                 |   |
+                |'''''|
+                \_____/
+"@
+
+$Tree = $Tree.Split("`n")
+
+    $FlipFlopper = $true
+    $Delay = 1 / $Frequency
+
+    while($true){    
+        Clear-Host
+
+        foreach ($Line in $Tree){
+            foreach ($Char in $Line){
+                if ($Char -eq 'o' ){
+                    #Pick a random color for each ornament
+                    $Index = Get-Random -Minimum 0 -Maximum ($Colors.Length -1)
+                    Write-Host -Object $Char -ForegroundColor $Colors[$Index]
+                }
+                elseif($Char -eq "X"){
+                    #Make the star twinkle by switching between yellow and white
+                    if($FlipFlopper){
+                        $Color = $StarColors[0]
+                    }
+                    else{
+                        $Color = $StarColors[1]
+                    }
+                    Write-Host -ForegroundColor $Color -Object $Char
+
+                    $FlipFlopper = !$FlipFlopper
+                }
+                else{
+                    Write-Host -Object $Char -ForegroundColor Green
+                }
+            }
+        }
+        Start-Sleep -Seconds $Delay
+    }
+}
